@@ -1,0 +1,34 @@
+comandos git
+
+git status
+
+historial de commits
+git log
+
+Añadir un solo archivo
+git add archivo.txt
+
+Añadir TODOS los archivos modificados
+git add .
+
+Hacer un commit
+git commit -m "Mensaje del commit"
+
+Subir cambios al repositorio (push)
+git push origin main
+
+comandos react
+
+Con Create React App (clásico)
+npx create-react-app nombre-proyecto
+cd nombre-proyecto
+npm start
+
+Con Vite
+npm create vite@latest
+
+Ejecutar la app en modo desarrollo
+npm start   
+
+Instalar una dependencia normal
+npm install nombre-paquete
