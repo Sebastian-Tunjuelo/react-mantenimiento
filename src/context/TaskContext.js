@@ -19,8 +19,10 @@ export const useTasks = () => {
 export const TaskContextProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
   const [adding, setAdding] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const getTasks = async (done = false) => {
+    setLoading(true);
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -32,6 +34,7 @@ export const TaskContextProvider = ({ children }) => {
       .order("id", { ascending: true });
     if (error) throw error;
     setTasks(data);
+    setLoading(false);
   };
 
   const createTask = async (taskName) => {
@@ -41,12 +44,14 @@ export const TaskContextProvider = ({ children }) => {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-
-      const { error, data } = await supabase.from("tasks").insert({
-        name: taskName,
-        done: false,
-        userId: user.id,
-      });
+      const { error, data } = await supabase
+        .from("tasks")
+        .insert({
+          name: taskName,
+          done: false,
+          userId: user.id,
+        })
+        .select();
       if (error) throw error;
       //... tasks es como decir traeme los arreglos que ya estan y luego ...data pide que se combinen
       setTasks([...tasks, ...data]);
@@ -56,9 +61,51 @@ export const TaskContextProvider = ({ children }) => {
       setAdding(false);
     }
   };
+  const deleteTask = async (id) => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    const { error, data } = await supabase
+      .from("tasks")
+      .delete()
+      .eq("userId", user.id)
+      .eq("id", id)
+      .select();
+    if (error) throw error;
+    //esto no elimina solo da el efecto de eliminacion
+    setTasks(tasks.filter((task) => task.id !== id));
+    console.log(data);
+  };
+
+  const updateTask = async (id, updateFields) => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    const { error, data } = await supabase
+      .from("tasks")
+      .update(updateFields)
+      .eq("userId", user.id)
+      .eq("id", id)
+      .select();
+    if (error) throw error;
+    //esto no elimina solo da el efecto de eliminacion o cambio
+    setTasks(tasks.filter((task) => task.id !== id));
+    console.log(data);
+  };
   return (
     //por este medio exporto las tareas
-    <TaskContext.Provider value={{ tasks, getTasks, createTask, adding }}>
+    <TaskContext.Provider
+      value={{
+        tasks,
+        getTasks,
+        createTask,
+        adding,
+        loading,
+        deleteTask,
+        updateTask,
+      }}
+    >
       {children}
     </TaskContext.Provider>
   );

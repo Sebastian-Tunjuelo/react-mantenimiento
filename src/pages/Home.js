@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../supabase/client";
 //import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,7 @@ import TaskList from "../components/TaskList";
 
 function Home() {
   const navigate = useNavigate();
+  const [showTaskDone, setshowTaskDone] = useState(false);
   //const obj = useContext(TaskContext);
   useEffect(() => {
     if (!supabase.auth.getUser()) {
@@ -21,7 +22,13 @@ function Home() {
       Home
       <button onClick={() => supabase.auth.signOut()}>logout</button>
       <TaskForm />
-      <TaskList />
+      <header>
+        <span>Tasks pending</span>
+        <button onClick={() => setshowTaskDone(!showTaskDone)}>
+          Show tasks done
+        </button>
+      </header>
+      <TaskList done={showTaskDone} />
     </div>
   );
 }

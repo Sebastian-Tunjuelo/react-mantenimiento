@@ -6,7 +6,6 @@ function TaskForm() {
   const { createTask, adding } = useTasks();
   const handleSumit = async (e) => {
     e.preventDefault();
-    console.log(adding);
     createTask(taskName);
     setTaskName("");
   };
