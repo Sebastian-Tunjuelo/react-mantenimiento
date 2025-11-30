@@ -1,22 +1,14 @@
 import { useState } from "react";
-import { supabase } from "../supabase/client";
+import { useTasks } from "../context/TaskContext";
 
 function TaskForm() {
   const [taskName, setTaskName] = useState("");
-
+  const { createTask, adding } = useTasks();
   const handleSumit = async (e) => {
     e.preventDefault();
-    try {
-      //cuando te registras te generan automaticamente un user
-      const user = supabase.auth.getUser();
-      const result = await supabase.from("tasks").insert({
-        name: taskName,
-        userId: user.id,
-      });
-      console.log(result);
-    } catch (error) {
-      console.log(error);
-    }
+    console.log(adding);
+    createTask(taskName);
+    setTaskName("");
   };
 
   return (
@@ -25,10 +17,11 @@ function TaskForm() {
         <input
           type="text"
           name="taskName"
-          placeholder="papi goku"
+          placeholder="Tarea"
           onChange={(e) => setTaskName(e.target.value)}
+          value={taskName}
         />
-        <button>Add</button>
+        <button disabled={adding}>{adding ? "adding..." : "Add"}</button>
       </form>
     </div>
   );
