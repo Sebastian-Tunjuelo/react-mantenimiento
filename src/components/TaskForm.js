@@ -11,7 +11,7 @@ function TaskForm() {
   };
 
   return (
-    <div>
+    <div className="card card-body mb-2">
       <form onSubmit={handleSumit}>
         <input
           type="text"
@@ -19,8 +19,11 @@ function TaskForm() {
           placeholder="Tarea"
           onChange={(e) => setTaskName(e.target.value)}
           value={taskName}
+          className="form-control mb-3"
         />
-        <button disabled={adding}>{adding ? "adding..." : "Add"}</button>
+        <button disabled={adding} className="btn btn-primary btn-sm">
+          {adding ? "adding..." : "Add"}
+        </button>
       </form>
     </div>
   );

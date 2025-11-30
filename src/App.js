@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound";
 import { TaskContextProvider } from "./context/TaskContext";
 
 import { supabase } from "./supabase/client";
+import Navbar from "./components/Navbar";
 function App() {
   const navigate = useNavigate();
   useEffect(() => {
@@ -23,11 +24,14 @@ function App() {
   return (
     <div className="App">
       <TaskContextProvider>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Navbar />
+        <div className="container">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
       </TaskContextProvider>
     </div>
   );

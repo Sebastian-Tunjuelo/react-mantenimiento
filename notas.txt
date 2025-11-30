@@ -32,3 +32,7 @@ npm start
 
 Instalar una dependencia normal
 npm install nombre-paquete
+
+
+https://www.youtube.com/watch?v=I1zzgAfSUBQ
+

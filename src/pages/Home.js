@@ -18,17 +18,23 @@ function Home() {
   }, [navigate]);
 
   return (
-    <div>
-      Home
-      <button onClick={() => supabase.auth.signOut()}>logout</button>
-      <TaskForm />
-      <header>
-        <span>Tasks pending</span>
-        <button onClick={() => setshowTaskDone(!showTaskDone)}>
-          Show tasks done
-        </button>
-      </header>
-      <TaskList done={showTaskDone} />
+    <div className="row pt-4">
+      <div className="col-md-4 offset-md-4">
+        {/*<button onClick={() => supabase.auth.signOut()}>logout</button>*/}
+        <TaskForm />
+        <header className="d-flex justify-content-between my-3">
+          <span className="h5">
+            {showTaskDone ? "Tasks done" : "Tasks to do"}
+          </span>
+          <button
+            className="btn btn-dark btn-sm mb-1"
+            onClick={() => setshowTaskDone(!showTaskDone)}
+          >
+            {showTaskDone ? "Show tasks to do" : "Show tasks done"}
+          </button>
+        </header>
+        <TaskList done={showTaskDone} />
+      </div>
     </div>
   );
 }
